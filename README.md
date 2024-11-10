@@ -56,17 +56,23 @@ For development work, you can significantly reduce build times (from hours to mi
    - Under `packages_select_by_deps:`, remove all entries and add only `  - ros_base`.
    - Increment the `build_number` by 1.
 2. Build the base packages:
+   
 ```bash
 python .scripts/builder.py
 ```
-3. After the build completes, copy the build directory to an accessible location.
-4. You can now use the `skip_existing` flag in the workflow by using the copied directory:
+
+1. After the build completes, copy the build directory to an accessible location.
+2. You can now use the `skip_existing` flag in the workflow by using the copied directory:
    
 ```bash
 python .scripts/run_patch_workflow.py --ip <LLM_IP_ADDRESS> --port <LLM_PORT> --model <LLM_MODEL> --skip_existing <ROS_BASE_BUILD_DIR>
 ```
 
 This ensures that the ROS Base package and it dependencies are not rebuilt, but allows for all other packages to be built.
+
+# GitHub Actions
+
+GitHub Actions is used to automate the workflow defined in `workflows/verify_patch.yaml`. This workflow is triggered automatically when a pull request is opened and runs `.scripts/run_patch_workflow.py`. If the build fails, the LLM (Large Language Model) attempts to repair the code, and any successful changes are automatically applied.
 
 # Attribution
 
